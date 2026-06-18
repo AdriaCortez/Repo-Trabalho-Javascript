@@ -3,7 +3,7 @@ import { auth, Active } from '../Controller/Profile/middlewares.controller.js'
 import { Inscrever, Desativar, Reativar } from '../Controller/Profile/user.controller.js'
 import { tokenEnviado, mudarSenha, verificarLogin } from '../Controller/Profile/auth.controller.js'
 import { createTask, updateTask, deleteTask } from '../Controller/Task/task.controller.js'
-import ConfiguracoesGlobais from './global.controller.js'
+import ConfiguracoesGlobais from './global.model.js'
 
 const app = express ()
 app.use(express.json())

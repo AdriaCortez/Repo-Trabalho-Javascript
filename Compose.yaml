@@ -16,7 +16,7 @@ services:
 
   backend:
     image: node:20-alpine
-    working_dir: /app/app/Controller
+    working_dir: /app/app/Model
     volumes:
       - ./:/app
     command: sh -c "node server.js"
