@@ -1,4 +1,4 @@
-import { Task } from "../../Model/task.database.model.js";
+import { Task } from "../../Model/Database/task.database.model.js";
 
 export async function createTask(req, res) {
 

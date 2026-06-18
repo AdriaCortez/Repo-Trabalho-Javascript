@@ -1,8 +1,8 @@
 import express from 'express'
-import { auth, Active } from './Profile/middlewares.controller.js'
-import { Inscrever, Desativar, Reativar } from './Profile/user.controller.js'
-import { tokenEnviado, mudarSenha, verificarLogin } from './Profile/auth.controller.js'
-import { createTask, updateTask, deleteTask } from './Task/task.controller.js'
+import { auth, Active } from '../Controller/Profile/middlewares.controller.js'
+import { Inscrever, Desativar, Reativar } from '../Controller/Profile/user.controller.js'
+import { tokenEnviado, mudarSenha, verificarLogin } from '../Controller/Profile/auth.controller.js'
+import { createTask, updateTask, deleteTask } from '../Controller/Task/task.controller.js'
 import ConfiguracoesGlobais from './global.controller.js'
 
 const app = express ()
@@ -30,7 +30,7 @@ app.post('/inscrever', async (req, res) => {
     }
 })
 
-app.post('/verificar-logiin', async (req, res) => {
+app.post('/verificar-login', async (req, res) => {
     try {
 
         return verificarLogin(req, res)
@@ -61,7 +61,7 @@ app.put('/desativar-conta', auth, Active, async (req, res) => {
 
     } catch (err) {
 
-          res.status(500).json({error: "Algo deu errado no servidor! Verifique /desativat-conta"})
+          res.status(500).json({error: "Algo deu errado no servidor! Verifique /desativar-conta"})
 
     }
 })
@@ -86,7 +86,7 @@ app.post('/criar-tarefa', auth, Active, async (req, res) => {
 
     } catch (err) {
 
-        return res.status(500).json({error: "Algo deu errado ao criar tarefa"
+        return res.status(500).json({error: "Algo deu errado no servidor! Verifique /criar-tarefa"
         });
 
     }
@@ -101,7 +101,7 @@ app.put('/editar-tarefa/:id', auth, Active, async (req, res) => {
     } catch (err) {
 
         return res.status(500).json({
-            error: "Algo deu errado ao editar tarefa"
+            error: "Algo deu errado no servidor! Verifique /editar-tarefa"
         });
 
     }
@@ -116,7 +116,7 @@ app.delete('/excluir-tarefa/:id', auth, Active, async (req, res) => {
     } catch (err) {
 
         return res.status(500).json({
-            error: "Algo deu errado ao excluir tarefa"
+            error: "Algo deu errado no servidor! Verifique /excluir-tarefa"
         });
 
     }
