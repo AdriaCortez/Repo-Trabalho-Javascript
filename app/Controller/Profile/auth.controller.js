@@ -68,15 +68,15 @@ export async function verificarLogin (req, res) {
      try {
             console.log("Verificando credenciais...");
     
-            const { email, senha } = req.body;
+            const { username, senha } = req.body;
     
-            if(!email || !senha) {
+            if(!username || !senha) {
                 return res.status(400).json({
-                    error: 'Cadastro inválido! E-mail e senha obrigatórios'
+                    error: 'Cadastro inválido! Nome de usuário e senha obrigatórios'
                 });
             } 
 
-            const user = await Usuario.findOne({ email }).select('+senha');
+            const user = await Usuario.findOne({ username }).select('+senha');
             const senhaCorreta = await bcrypt.compare(senha, user.senha);
 
             const assinatura = jwt.sign(
