@@ -4,10 +4,10 @@ import mongoose from "mongoose";
 import express from "express";
 import cookieParser from "cookie-parser";
 
-export default function ConfiguracoesGlobais() {
+export default function ConfiguracoesGlobais(app) {
   dotenv.config();
 
-  const app = express();
+  //const app = express();
   const port = 4000;
   const uri = process.env.MONGO_URI;
 

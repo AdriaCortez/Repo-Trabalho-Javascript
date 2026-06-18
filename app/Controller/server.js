@@ -122,5 +122,9 @@ app.delete('/excluir-tarefa/:id', auth, Active, async (req, res) => {
     }
 });
 
+app.get('/ping',async(req, res)=>{
+    return res.send('pong');
+});
 
-ConfiguracoesGlobais();
+
+ConfiguracoesGlobais(app);
