@@ -2,6 +2,7 @@ import express from 'express'
 import { auth, Active } from './Profile/middlewares.controller.js'
 import { Inscrever, Desativar, Reativar } from './Profile/user.controller.js'
 import { tokenEnviado, mudarSenha, verificarLogin } from './Profile/auth.controller.js'
+import { createTask, updateTask, deleteTask } from './Task/task.controller.js'
 import ConfiguracoesGlobais from './global.controller.js'
 
 const app = express ()
@@ -10,7 +11,7 @@ app.use(express.json())
 app.get('/token-enviado', auth, async (req, res) => {
     try {
 
-       return tokenEnviado()
+       return tokenEnviado(req, res)
 
     } catch (err) {
         console.log("Erro em /token-enviado:", err);
@@ -21,7 +22,7 @@ app.get('/token-enviado', auth, async (req, res) => {
 app.post('/inscrever', async (req, res) => {
     try {
 
-      return Inscrever()
+      return Inscrever(req, res)
 
     } catch (err) {
         res.status(500).json({error: "Algo deu errado no servidor! Verifique /inscrever"})
@@ -32,7 +33,7 @@ app.post('/inscrever', async (req, res) => {
 app.post('/verificar-logiin', async (req, res) => {
     try {
 
-        return verificarLogin()
+        return verificarLogin(req, res)
 
     } catch (err) {
 
@@ -44,7 +45,7 @@ app.post('/verificar-logiin', async (req, res) => {
 app.put('/mudar-senha', auth, Active, async (req, res) => {
     try {
         
-        return mudarSenha()
+        return mudarSenha(req, res)
 
     } catch (err) {
 
@@ -56,7 +57,7 @@ app.put('/mudar-senha', auth, Active, async (req, res) => {
 app.put('/desativar-conta', auth, Active, async (req, res) => {
     try {
 
-        return Desativar()
+        return Desativar(req, res)
 
     } catch (err) {
 
@@ -68,7 +69,7 @@ app.put('/desativar-conta', auth, Active, async (req, res) => {
 app.put('/reativar-conta', auth, async (req, res) => {
     try {
         
-        return Reativar()
+        return Reativar(req, res)
         
     } catch (err) {
 
@@ -76,5 +77,50 @@ app.put('/reativar-conta', auth, async (req, res) => {
 
     }
 })
+
+
+app.post('/criar-tarefa', auth, Active, async (req, res) => {
+    try {
+
+        return createTask(req, res);
+
+    } catch (err) {
+
+        return res.status(500).json({error: "Algo deu errado ao criar tarefa"
+        });
+
+    }
+});
+
+
+app.put('/editar-tarefa/:id', auth, Active, async (req, res) => {
+    try {
+
+        return updateTask(req, res);
+
+    } catch (err) {
+
+        return res.status(500).json({
+            error: "Algo deu errado ao editar tarefa"
+        });
+
+    }
+});
+
+
+app.delete('/excluir-tarefa/:id', auth, Active, async (req, res) => {
+    try {
+
+        return deleteTask(req, res);
+
+    } catch (err) {
+
+        return res.status(500).json({
+            error: "Algo deu errado ao excluir tarefa"
+        });
+
+    }
+});
+
 
 ConfiguracoesGlobais();
