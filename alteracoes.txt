@@ -1,0 +1,235 @@
+/*
+=========================================
+IMPLEMENTAÇÃO DO MÓDULO DE TAREFAS
+=========================================
+
+1. Criação do Model de Tarefa
+-----------------------------------------
+Arquivo criado:
+app/Model/task.database.model.js
+
+Objetivo:
+- Representar as tarefas no banco de dados MongoDB.
+- Definir a estrutura dos dados da tarefa.
+
+Campos implementados:
+- titulo
+- descricao
+- fixada
+- tags
+- compartilhadaCom
+- criadoPor
+
+Casos de uso contemplados:
+- UC08 - Adicionar tarefa
+- UC11 - Destacar/Fixar tarefa
+- UC12 - Adicionar tag
+- UC13 - Compartilhar tarefa
+
+
+2. Criação do Controller de Tarefas
+-----------------------------------------
+Arquivo criado:
+app/Controller/Task/task.controller.js
+
+Objetivo:
+- Centralizar as regras de negócio relacionadas às tarefas.
+
+Métodos criados:
+- createTask()
+- updateTask()
+- deleteTask()
+- pinTask()
+- addTag()
+- shareTask()
+
+Observação:
+Inicialmente apenas o método createTask() foi implementado.
+Os demais permanecem preparados para implementação futura.
+
+
+3. Adequação ao padrão do projeto
+-----------------------------------------
+Foi identificado que os controllers existentes utilizam
+funções exportadas diretamente, e não classes.
+
+Exemplo do padrão utilizado:
+
+export async function Inscrever(req, res) {}
+
+Por esse motivo o TaskController foi adaptado para seguir
+o mesmo padrão arquitetural já utilizado no projeto.
+
+
+4. Correção das rotas existentes
+-----------------------------------------
+Foi identificado que algumas rotas chamavam os controllers
+sem enviar os parâmetros req e res.
+
+Exemplo incorreto:
+
+return Inscrever()
+
+Correção aplicada:
+
+return Inscrever(req, res)
+
+Ajuste realizado nas rotas:
+- /token-enviado
+- /inscrever
+- /verificar-logiin
+- /mudar-senha
+- /desativar-conta
+- /reativar-conta
+
+
+5. Integração com autenticação
+-----------------------------------------
+Foi analisado o middleware de autenticação.
+
+Verificado que após validar o JWT o sistema injeta:
+
+req.userId
+
+Portanto o usuário criador da tarefa passa a ser obtido
+automaticamente pelo token autenticado.
+
+Exemplo:
+
+criadoPor: req.userId
+
+Isso evita que o front-end informe manualmente o ID
+do usuário, aumentando a segurança da aplicação.
+
+
+6. Criação da rota de tarefa
+-----------------------------------------
+Import adicionado:
+
+import { createTask } from './Task/task.controller.js'
+
+Rota criada:
+
+POST /criar-tarefa
+
+Proteções aplicadas:
+- auth
+- Active
+
+Fluxo:
+
+Usuário
+ ↓
+Autenticação (auth)
+ ↓
+Validação de conta ativa (Active)
+ ↓
+createTask()
+ ↓
+MongoDB
+
+Casos de uso contemplados:
+- UC08 - Adicionar tarefa
+
+7. Implementação do UC09 - Editar Tarefa
+-----------------------------------------
+Método implementado:
+
+updateTask()
+
+Objetivo:
+Permitir a alteração das informações de uma tarefa já
+existente.
+
+Funcionalidades implementadas:
+
+- Busca da tarefa pelo ID.
+- Validação da existência da tarefa.
+- Atualização do título.
+- Atualização da descrição.
+- Salvamento das alterações no banco de dados.
+
+Rota criada:
+
+PUT /editar-tarefa/:id
+
+Fluxo:
+
+Usuário
+ ↓
+PUT /editar-tarefa/:id
+ ↓
+Autenticação (auth)
+ ↓
+Validação de conta ativa (Active)
+ ↓
+updateTask()
+ ↓
+MongoDB
+
+Caso de uso contemplado:
+- UC09 - Editar tarefa
+
+
+8. Implementação do UC10 - Excluir Tarefa
+-----------------------------------------
+Método implementado:
+
+deleteTask()
+
+Objetivo:
+Permitir a remoção de uma tarefa existente.
+
+Funcionalidades implementadas:
+
+- Busca da tarefa pelo ID.
+- Validação da existência da tarefa.
+- Exclusão do registro no banco.
+- Retorno de confirmação da operação.
+
+Rota criada:
+
+DELETE /excluir-tarefa/:id
+
+Fluxo:
+
+Usuário
+ ↓
+DELETE /excluir-tarefa/:id
+ ↓
+Autenticação (auth)
+ ↓
+Validação de conta ativa (Active)
+ ↓
+deleteTask()
+ ↓
+MongoDB
+
+Caso de uso contemplado:
+- UC10 - Excluir tarefa
+
+
+=========================================
+STATUS ATUAL
+=========================================
+
+Concluído:
+✔ Model de Tarefa
+✔ Controller de Tarefa
+✔ Método createTask()
+✔ Método updateTask()
+✔ Método deleteTask()
+✔ Correção das rotas existentes
+✔ Integração com autenticação
+✔ Rota POST /criar-tarefa
+✔ Rota PUT /editar-tarefa/:id
+✔ Rota DELETE /excluir-tarefa/:id
+✔ UC08 - Adicionar tarefa
+✔ UC09 - Editar tarefa
+✔ UC10 - Excluir tarefa
+
+Próximos passos:
+□ UC11 - Destacar/Fixar tarefa
+□ UC12 - Adicionar tag
+□ UC13 - Compartilhar tarefa
+□ UC14 - Criar módulo em grupo
