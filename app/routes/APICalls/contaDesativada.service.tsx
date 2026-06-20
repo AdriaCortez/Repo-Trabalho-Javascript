@@ -1,6 +1,5 @@
 "use client";
 
-import AccountDeactivated from "../page/deactivatedPage";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
@@ -92,16 +91,5 @@ export default function ContaDesativada() {
     }
   };
 
-  return (
-    <AccountDeactivated
-      username={username}
-      setUsername={setUsername}
-      nome={nome}
-      setNome={setNome}
-      senha={senha}
-      setSenha={setSenha}
-      HandleLogout={HandleLogout}
-      Reativar={Reativar}
-    />
-  );
+  return null;
 }

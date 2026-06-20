@@ -64,7 +64,7 @@ export default function Tarefas() {
         }
 
         validarUser();
-    }, [navigate]);
+    }, []);
 
     const adicionarTarefa = async (id: any, e: React.FormEvent<HTMLFormElement> ) => {
         e.preventDefault();
@@ -191,15 +191,9 @@ export default function Tarefas() {
             if (ApiDeletarTarefa.ok) {
 
                 setTarefa((prev) =>
-                    prev.filter(
-                        (tarefa) => tarefa._id !== id
-                    )
-                );
+                    prev.filter((tarefa) => tarefa._id !== id));
 
-                console.log(
-                    "Tarefa excluída com sucesso!"
-                );
-
+                console.log("Tarefa excluída com sucesso!");
                 return;
             }
 
@@ -224,8 +218,7 @@ export default function Tarefas() {
             }
 
         } catch (error) {
-            console.error(
-                "Erro ao excluir tarefa",
+            console.error("Erro ao excluir tarefa",
                 error
             );
         }

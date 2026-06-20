@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { CadastroView } from "../../View/login.view";
 
 export default function Cadastro() {
   const [nome, setNome] = useState("");
@@ -63,17 +62,6 @@ export default function Cadastro() {
     }
   };
 
-  return (
-    <CadastroView
-      nome={nome}
-      email={email}
-      username={username}
-      senha={senha}
-      setNome={setNome}
-      setEmail={setEmail}
-      setUsername={setUsername}
-      setSenha={setSenha}
-      onSubmit={Cadastrar}
-    />
-  );
+  return null
+
 }
