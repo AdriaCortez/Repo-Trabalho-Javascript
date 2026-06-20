@@ -9,19 +9,19 @@ type ChecklistItem = {
 };
 
 type Tarefa = {
-    _id?: string;
+    _id?: any;
     titulo: string;
     descricao?: string;
-    tags?: string[];
+    tag?: string[];
     checklist?: ChecklistItem[];
 };
 
 export default function Tarefas() {
     const [titulo, setTitulo] = useState("");
     const [descricao, setDescricao] = useState("");
-    const [tags, setTags] = useState<string[]>([]);
+    const [tag, setTag] = useState<string[]>([]);
     const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
-    const [tarefas, setTarefas] = useState<Tarefa[]>([]);
+    const [tarefa, setTarefa] = useState<Tarefa[]>([]);
     const [username, setUsername] = useState("");
     const [nome, setNome] = useState("");
 
@@ -49,7 +49,7 @@ export default function Tarefas() {
 
                 setUsername(data.username);
                 setNome(data.nome);
-                setTarefas(data.tarefas || []);
+                setTarefa(data.tarefa || []);
 
                 console.log("Usuário validado com sucesso");
 
@@ -66,7 +66,7 @@ export default function Tarefas() {
         validarUser();
     }, [navigate]);
 
-    const adicionarTarefa = async (e: React.FormEvent<HTMLFormElement> ) => {
+    const adicionarTarefa = async (id: any, e: React.FormEvent<HTMLFormElement> ) => {
         e.preventDefault();
 
         try {
@@ -76,18 +76,18 @@ export default function Tarefas() {
                     credentials: "include",
                     headers: { "Content-Type": "application/json" },
 
-                    body: JSON.stringify({ titulo, descricao, tags, checklist, }),
+                    body: JSON.stringify({ titulo, descricao, tag, checklist, }),
                 }
             );
 
             const data = await ApiAdicionarTarefa.json();
 
             if (ApiAdicionarTarefa.ok) {
-                setTarefas((prev) => [...prev, data.tarefa ]);
+                setTarefa((prev) => [...prev, data.tarefa ]);
 
                 setTitulo("");
                 setDescricao("");
-                setTags([]);
+                setTag([]);
                 setChecklist([]);
 
                 console.log("Tarefa adicionada com sucesso!" );
@@ -116,13 +116,120 @@ export default function Tarefas() {
 
     };
 
-    const editarTarefa  = async (e: React.FormEvent<HTMLFormElement>) => {
+    const editarTarefa = async (id: any, e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+        const ApiEditarTarefa = await fetch( `http://localhost:4000/editar-tarefa/${id}`,
+            {
+                method: "PUT",
+                credentials: "include",
+                headers: {"Content-Type": "application/json" },
+                body: JSON.stringify({ titulo, descricao, checklist, tag }),
+            }
+        );
+
+        const data = await ApiEditarTarefa.json();
+
+        if (ApiEditarTarefa.ok) {
+
+            setTarefa((prev) =>
+                prev.map((tarefa) =>
+                    tarefa._id === id ? data.tarefa : tarefa )
+            );
+
+            console.log(
+                "Tarefa atualizada com sucesso!"
+            );
+
+            return;
+        }
+
+        if (ApiEditarTarefa.status === 400) {
+            alert("Dados inválidos.");
+            return;
+        }
+
+        if (ApiEditarTarefa.status === 401 || ApiEditarTarefa.status === 403) {
+            alert("Sem permissão para editar esta tarefa.");
+            return;
+        }
+
+        if (ApiEditarTarefa.status === 404) {
+            alert("Tarefa não encontrada.");
+            return;
+        }
+
+        if (ApiEditarTarefa.status === 500) { 
+            alert("Erro no servidor.");
+            return;
+        }
+
+    } catch (error) {
+        console.error(
+            "Erro ao editar tarefa",
+            error
+        );
+    }
+};
+
+    const deletarTarefa = async (id: any, e: any) => {
+        e.preventDefault();
+
         try {
+            const ApiDeletarTarefa = await fetch(`http://localhost:4000/excluir-tarefa/${id}`,
+                {
+                    method: 'DELETE',
+                    credentials: 'include',
+                    headers: {"Content-type": "application/json"},
+
+                }
+            )
+
+            const data = await ApiDeletarTarefa.json();
+
+            if (ApiDeletarTarefa.ok) {
+
+                setTarefa((prev) =>
+                    prev.filter(
+                        (tarefa) => tarefa._id !== id
+                    )
+                );
+
+                console.log(
+                    "Tarefa excluída com sucesso!"
+                );
+
+                return;
+            }
+
+            if (ApiDeletarTarefa.status === 400) {
+                alert("ID de tarefa inválido.");
+                return;
+            }
+
+            if (ApiDeletarTarefa.status === 401 || ApiDeletarTarefa.status === 403) {
+                 alert("Sem permissão para excluir esta tarefa.");
+                return;
+            }
+
+            if (ApiDeletarTarefa.status === 404) {
+                alert("Tarefa não encontrada.");
+                return;
+            }
+
+            if (ApiDeletarTarefa.status === 500) {
+                alert("Erro no servidor.");
+                return;
+            }
 
         } catch (error) {
-            console.error("Erro ao editar tarefa", error)
+            console.error(
+                "Erro ao excluir tarefa",
+                error
+            );
         }
-    }
+    };
 
     return null;
 }

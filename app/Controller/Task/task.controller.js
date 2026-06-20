@@ -39,7 +39,7 @@ export async function createTask(req, res) {
 export async function updateTask(req, res) {
   try {
     const { id } = req.params;
-    const { titulo, descricao } = req.body;
+    const { titulo, descricao, checklist, tag } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
@@ -63,14 +63,6 @@ export async function updateTask(req, res) {
         error: "Tarefa não encontrada",
       });
     }
-
-    if (res.status(401)) {
-      return res.status(401).json({
-        error: "Usuário não está autenticado, não é possível editar tarefa",
-      });
-    }
-
-    await tarefa.save();
 
     return res.status(200).json({
       message: "Tarefa atualizada com sucesso",
@@ -103,12 +95,6 @@ export async function deleteTask(req, res) {
     }
 
     await tarefa.deleteOne();
-
-    if (res.status(401)) {
-      return res.status(401).json({
-        error: "Usuário não está autenticado, não é possível excluir tarefa",
-      });
-    }
 
     return res.status(200).json({
       message: "Tarefa excluída com sucesso",
