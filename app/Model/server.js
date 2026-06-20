@@ -1,7 +1,7 @@
 import express from 'express'
 import { auth, Active } from '../Controller/Profile/middlewares.controller.js'
 import { Inscrever, Desativar, Reativar } from '../Controller/Profile/user.controller.js'
-import { tokenEnviado, mudarSenha, verificarLogin } from '../Controller/Profile/auth.controller.js'
+import { tokenEnviado, mudarSenha, verificarLogin, logout } from '../Controller/Profile/auth.controller.js'
 import { createTask, updateTask, deleteTask } from '../Controller/Task/task.controller.js'
 import ConfiguracoesGlobais from './global.model.js'
 
@@ -30,7 +30,7 @@ app.post('/inscrever', async (req, res) => {
     }
 })
 
-app.post('/verificar-login', async (req, res) => {
+app.get('/verificar-login', async (req, res) => {
     try {
 
         return verificarLogin(req, res)
@@ -66,7 +66,7 @@ app.put('/desativar-conta', auth, Active, async (req, res) => {
     }
 })
 
-app.put('/reativar-conta', auth, async (req, res) => {
+app.patch('/reativar-conta', auth, async (req, res) => {
     try {
         
         return Reativar(req, res)
@@ -121,6 +121,16 @@ app.delete('/excluir-tarefa/:id', auth, Active, async (req, res) => {
 
     }
 });
+
+app.post('/logout', async (req, res) => {
+    try {
+        return logout(req, res);
+    } catch (err) {
+        console.error("Erro de logout em server.js", err);
+        return res.status(500).json({ error: "Algo deu errado no servidor! Verifique /logout" });
+    }
+});
+
 
 app.get('/ping',async(req, res)=>{
     return res.send('pong');

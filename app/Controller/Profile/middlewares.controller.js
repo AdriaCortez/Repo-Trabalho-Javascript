@@ -7,9 +7,7 @@ export function auth(req, res, next) {
   const cookie = Storage(req);
 
   if (!cookie) {
-    return res
-      .status(401)
-      .json({ error: "usuário não autenticado. Ausência de cookie/token" });
+    return res.status(401).json({ error: "usuário não autenticado. Ausência de cookie/token" });
   }
 
   try {
@@ -18,6 +16,7 @@ export function auth(req, res, next) {
     req.userId = check.id;
 
     next();
+
   } catch (err) {
     return res.status(401).json({ error: "Token inválido" });
   }
@@ -33,15 +32,14 @@ export async function Active(req, res, next) {
     }
 
     if (!user.ativo) {
-      return res
-        .status(403)
-        .json({
+      return res.status(403).json({
           error: "Usuário inativo",
           user: { nome: user.nome, username: user.username },
         });
     }
 
     req.user = user;
+    
     next();
   } catch (err) {
     return res.status(500).json({ error: "Erro interno" });

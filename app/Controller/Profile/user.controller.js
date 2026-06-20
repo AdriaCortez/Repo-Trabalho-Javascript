@@ -88,9 +88,7 @@ export async function Reativar(req, res) {
     const SenhaCorreta = await bcrypt.compare(senha, user.senha);
 
     if (!SenhaCorreta) {
-      return res
-        .status(400)
-        .json({ message: "Senha obrigatória pra desativar a conta" });
+      return res.status(400).json({ message: "Senha obrigatória pra desativar a conta" });
     }
 
     user.ativo = true;
@@ -98,9 +96,7 @@ export async function Reativar(req, res) {
 
     return res.status(200).json({ message: "Conta reativada" });
   } catch (err) {
-    return res
-      .status(500)
-      .json({
+    return res.status(500).json({
         message: "Erro so tentar reativar conta, verificar userService",
       });
   }

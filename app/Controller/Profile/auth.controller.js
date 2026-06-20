@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { Usuario } from "../../Model/Database/user.database.model.js";
+import { ClearStorage } from "../Storage/cookie.controller.js";
 
 export const token = process.env.ACESS_JWT_TOKEN;
 export async function tokenEnviado(req, res) {
@@ -17,6 +18,15 @@ export async function tokenEnviado(req, res) {
   }
 }
 
+export async function logout(req, res) {
+  try {
+    ClearStorage(res);
+    return res.json({ message: "Logout realizado com sucesso" });
+  } catch (err) {
+    console.error("Erro de logout em auth.controller.js", err)
+  }
+}
+  
 export async function mudarSenha(req, res) {
   try {
     const { senhaatual, novasenha, confirmarSenha } = req.body;
