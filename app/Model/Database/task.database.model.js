@@ -3,12 +3,34 @@ import mongoose from "mongoose";
 const TaskSchema = new mongoose.Schema({
     titulo: {
         type: String,
-        required: true
+        required: true,
+        minLength: 1,
+        maxLength: 100
     },
 
     descricao: {
         type: String,
-        default: ""
+        default: "",
+        minLength: 1,
+        maxLength: 1000
+    },
+
+    checklist: {
+        type: [{
+            texto: {
+                type: String,
+                required: true,
+                minLength: 1,
+                maxLength: 200
+            },
+
+            concluido: {
+                type: Boolean,
+                default: false
+            }
+        }],
+        
+        default: []
     },
 
     fixada: {
@@ -16,13 +38,10 @@ const TaskSchema = new mongoose.Schema({
         default: false
     },
 
-    tags: [{
-        type: String
-    }],
-
-    compartilhadaCom: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+    tag: [{
+        type: String,
+        required: false,
+        minLength: 1
     }],
 
     criadoPor: {
@@ -37,4 +56,4 @@ const TaskSchema = new mongoose.Schema({
     }
 });
 
-export const Task = mongoose.model("Task", TaskSchema);
+export const Tarefa = mongoose.model("Task", TaskSchema);
