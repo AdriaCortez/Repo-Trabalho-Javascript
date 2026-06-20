@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
 export default function ContaDesativada() {
+  
   const [username, setUsername] = useState("");
   const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
@@ -91,5 +92,7 @@ export default function ContaDesativada() {
     }
   };
 
-  return null;
+  return (
+   
+  );
 }

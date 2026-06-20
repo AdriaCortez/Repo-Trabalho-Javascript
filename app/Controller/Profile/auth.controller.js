@@ -13,20 +13,22 @@ export async function tokenEnviado(req, res) {
     }
 
     return res.json(subscribed);
-  } catch {
-    console.error("Erro em services/authService.js");
+  } catch (err) {
+    console.error("Erro em services/authService.js", err);
+    return res.status(500).json({ error: "Erro interno" });
   }
 }
 
 export async function logout(req, res) {
   try {
-    ClearStorage(res);
+    ClearStorage(req, res);
     return res.json({ message: "Logout realizado com sucesso" });
   } catch (err) {
-    console.error("Erro de logout em auth.controller.js", err)
+    console.error("Erro de logout em auth.controller.js", err);
+    return res.status(500).json({ error: "Erro ao fazer logout" });
   }
 }
-  
+
 export async function mudarSenha(req, res) {
   try {
     const { senhaatual, novasenha, confirmarSenha } = req.body;
@@ -58,8 +60,9 @@ export async function mudarSenha(req, res) {
     await user.save();
 
     return res.json({ message: "Senha alterada com sucesso!" });
-  } catch {
-    console.error("Erro em ChangePassword em authService.js");
+  } catch (err) {
+    console.error("Erro em ChangePassword em authService.js", err);
+    return res.status(500).json({ error: "Erro ao mudar senha" });
   }
 }
 export async function verificarLogin(req, res) {
@@ -75,11 +78,14 @@ export async function verificarLogin(req, res) {
     }
 
     const user = await Usuario.findOne({ username }).select("+senha");
-    const senhaCorreta = await bcrypt.compare(senha, user.senha);
 
-    const assinatura = jwt.sign({ id: user._id, email: user.email }, token, {
-      expiresIn: "20m",
-    });
+    if (!user) {
+      return res.status(403).json({
+        error: "Erro! Esse usuário não existe",
+      });
+    }
+
+    const senhaCorreta = await bcrypt.compare(senha, user.senha);
 
     if (!senhaCorreta) {
       return res.status(403).json({
@@ -87,11 +93,9 @@ export async function verificarLogin(req, res) {
       });
     }
 
-    if (!user) {
-      return res.status(403).json({
-        error: "Erro! Esse email não existe",
-      });
-    }
+    const assinatura = jwt.sign({ id: user._id, email: user.email }, token, {
+      expiresIn: "20m",
+    });
 
     if (!user.ativo) {
       res.cookie("cookie-auth", assinatura, {
@@ -118,7 +122,8 @@ export async function verificarLogin(req, res) {
       message: "Login realizado com sucesso",
       Usuario: { id: user._id },
     });
-  } catch {
-    console.error("Erro no verifyLogin em authService.js");
+  } catch (err) {
+    console.error("Erro no verifyLogin em authService.js", err);
+    return res.status(500).json({ error: "Erro ao fazer login" });
   }
 }

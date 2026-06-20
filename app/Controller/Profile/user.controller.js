@@ -61,6 +61,8 @@ export async function Desativar(req, res) {
 
     user.ativo = false;
     await user.save();
+
+    return res.status(200).json({ message: "Conta desativada" });
   } catch (err) {
     res
       .status(500)
@@ -97,7 +99,11 @@ export async function Reativar(req, res) {
     return res.status(200).json({ message: "Conta reativada" });
   } catch (err) {
     return res.status(500).json({
-        message: "Erro so tentar reativar conta, verificar userService",
+        message: "Erro ao tentar reativar conta, verificar userService",
+        error: err,
+      });
+  }
+}
       });
   }
 }

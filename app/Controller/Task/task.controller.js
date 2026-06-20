@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Tarefa } from "../../Model/task.database.model.js";
 
 export async function createTask(req, res) {
@@ -17,12 +18,6 @@ export async function createTask(req, res) {
       tag,
       criadoPor: req.userId,
     });
-
-    if (res.status(401)) {
-      return res.status(401).json({
-        error: "Usuário não está autenticado, não é possível criar tarefa",
-      });
-    }
 
     return res.status(201).json({
       message: "Tarefa criada com sucesso",
@@ -86,7 +81,7 @@ export async function deleteTask(req, res) {
       });
     }
 
-    const tarefa = await Task.findById(id);
+    const tarefa = await Tarefa.findById(id);
 
     if (!tarefa) {
       return res.status(404).json({

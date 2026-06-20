@@ -4,150 +4,157 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 
 export default function PasswordChange() {
-    const [senhaAtual, setSenhaAtual] = useState("");
-    const [novaSenha, setNovaSenha] = useState("");
-    const [confirmarSenha, setConfirmarSenha] = useState("");
-    const [user, setUser] = useState<any>(null);
-    const [carregando, setCarregando] = useState(false);
+  const [senhaAtual, setSenhaAtual] = useState("");
+  const [novaSenha, setNovaSenha] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
+  const [user, setUser] = useState<any>(null);
+  const [carregando, setCarregando] = useState(false);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        async function validarUser() {
-            try {
-                const ApiValidado = await fetch("http://localhost:4000/token-enviado",
-                    {
-                        credentials: "include",
-                    }
-                );
+  useEffect(() => {
+    async function validarUser() {
+      try {
+        const ApiValidado = await fetch("http://localhost:4000/token-enviado", {
+          credentials: "include",
+        });
 
-                if (!ApiValidado.ok) {
-                    if (ApiValidado.status === 403) {
-                        alert("Conta desativada.");
-                        
-                        navigate("/desativado");
-                    } else {
-                        navigate("/login");
-                    }
+        if (!ApiValidado.ok) {
+          if (ApiValidado.status === 403) {
+            alert("Conta desativada.");
 
-                    return;
-                }
+            navigate("/desativado");
+          } else {
+            navigate("/login");
+          }
 
-                const data = await ApiValidado.json();
-
-                setUser(data);
-
-                if (!data || !data._id) {
-                    alert(
-                        "Usuário não autenticado. Faça o login novamente"
-                    );
-                    navigate("/login");
-                }
-
-                console.log("Usuário validado com sucesso");
-            } catch (err) {
-                console.error("Erro na validação do usuário", err);
-
-                navigate("/login");
-            }
+          return;
         }
 
-        validarUser();
-    }, []);
+        const data = await ApiValidado.json();
 
-    const HandleChangePassword = async (
-        e: React.FormEvent<HTMLFormElement>
-    ) => {
-        e.preventDefault();
+        setUser(data);
 
-        if (novaSenha !== confirmarSenha) {
-            alert("As senhas não coincidem.");
-            return;
+        if (!data || !data._id) {
+          alert("Usuário não autenticado. Faça o login novamente");
+          navigate("/login");
         }
 
-        if (!senhaAtual) {
-            alert("Senha atual incorreta.");
-            return;
-        }
+        console.log("Usuário validado com sucesso");
+      } catch (err) {
+        console.error("Erro na validação do usuário", err);
 
-        setCarregando(true);
+        navigate("/login");
+      }
+    }
 
-        try {
-            const apiChange = await fetch(
-                "http://localhost:4000/change-password",
-                {
-                    method: "PUT",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        senhaatual: senhaAtual,
-                        confirmarsenha: confirmarSenha,
-                        novasenha: novaSenha,
-                    }),
-                }
-            );
+    validarUser();
+  }, []);
 
-            const data = await apiChange.json();
+  const HandleChangePassword = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-            if (!apiChange.ok) {
-                console.log(
-                    data.message ||
-                        "Erro na hora de trocar senha."
-                );
-                setCarregando(false);
-                return;
-            }
+    if (novaSenha !== confirmarSenha) {
+      alert("As senhas não coincidem.");
+      return;
+    }
 
-            setSenhaAtual("");
-            setNovaSenha("");
-            setConfirmarSenha("");
-            setCarregando(false);
+    if (!senhaAtual) {
+      alert("Senha atual incorreta.");
+      return;
+    }
 
-            alert("Sua senha foi alterada.");
+    setCarregando(true);
 
-            Handlelogout();
+    try {
+      const apiChange = await fetch("http://localhost:4000/mudar-senha", {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          senhaatual: senhaAtual,
+          confirmarsenha: confirmarSenha,
+          novasenha: novaSenha,
+        }),
+      });
 
-            return;
-        } catch (err) {
-            console.log(
-                "Erro ao trocar a senha:",
-                err
-            );
+      const data = await apiChange.json();
 
-            alert("Erro no servidor");
-            setCarregando(false);
-        }
-    };
+      if (!apiChange.ok) {
+        console.log(data.message || "Erro na hora de trocar senha.");
+        setCarregando(false);
+        return;
+      }
 
-    const Handlelogout = async () => {
-        try {
-            console.log("Deslogando...");
+      setSenhaAtual("");
+      setNovaSenha("");
+      setConfirmarSenha("");
+      setCarregando(false);
 
-            await fetch(
-                "http://localhost:4000/logout",
-                {
-                    method: "POST",
-                    credentials: "include",
-                }
-            );
+      alert("Sua senha foi alterada.");
 
-            setUser(null);
+      Handlelogout();
 
-            console.log("Você foi desconectado");
+      return;
+    } catch (err) {
+      console.log("Erro ao trocar a senha:", err);
 
-            alert(
-                "Desconectado da sua conta. Entre novamente."
-            );
+      alert("Erro no servidor");
+      setCarregando(false);
+    }
+  };
 
-            navigate("/");
-        } catch (error) {
-            console.error(
-                "Não foi possível fazer logout"
-            );
-        }
-    };
+  const Handlelogout = async () => {
+    try {
+      console.log("Deslogando...");
 
-    return null;
+      await fetch("http://localhost:4000/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      setUser(null);
+
+      console.log("Você foi desconectado");
+
+      alert("Desconectado da sua conta. Entre novamente.");
+
+      navigate("/");
+    } catch (error) {
+      console.error("Não foi possível fazer logout");
+    }
+  };
+
+  return (
+    <div>
+      <h1>Trocar Senha</h1>
+      {user && (
+        <form onSubmit={HandleChangePassword}>
+          <input
+            type="password"
+            value={senhaAtual}
+            onChange={(e) => setSenhaAtual(e.target.value)}
+            placeholder="Senha Atual"
+          />
+          <input
+            type="password"
+            value={novaSenha}
+            onChange={(e) => setNovaSenha(e.target.value)}
+            placeholder="Nova Senha"
+          />
+          <input
+            type="password"
+            value={confirmarSenha}
+            onChange={(e) => setConfirmarSenha(e.target.value)}
+            placeholder="Confirmar Senha"
+          />
+          <button type="submit" disabled={carregando}>
+            {carregando ? "Alterando..." : "Alterar Senha"}
+          </button>
+        </form>
+      )}
+    </div>
+  );
 }
