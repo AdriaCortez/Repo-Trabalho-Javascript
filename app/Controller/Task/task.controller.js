@@ -1,5 +1,4 @@
-import { Tarefa } from "../../Model/Database/task.database.model.js";
-import mongoose from "mongoose";
+import { Task } from "../../Model/task.database.model.js";
 
 export async function createTask(req, res) {
 
