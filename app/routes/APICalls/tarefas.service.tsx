@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+import TarefasView from "~/View/tarefas.view";
 
 type ChecklistItem = {
   texto: string;
@@ -213,9 +214,23 @@ export default function Tarefas() {
   };
 
   return (
-    <div>
-      <h1>Tarefas</h1>
-      {nome && <p>Bem-vindo, {nome}!</p>}
-    </div>
+    <TarefasView
+      titulo={titulo}
+      descricao={descricao}
+      tag={tag}
+      checklist={checklist}
+      username={username}
+      nome={nome}
+      tarefa={tarefa}
+      username={username}
+      setTitulo={setTitulo}
+      setDescricao={setDescricao}
+      setTag={setTag}
+      setCheklist={setChecklist}
+      setUsername={setUsername}
+      adicionarTarefa={adicionarTarefa}
+      editarTarefa={editarTarefa}
+      deletarTarefa={deletarTarefa}
+    />
   );
 }

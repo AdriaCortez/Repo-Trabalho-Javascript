@@ -1,10 +1,11 @@
 "use client";
 
+import ContaDesativadaView from "~/View/contaDesativada.view";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
 export default function ContaDesativada() {
-  
+
   const [username, setUsername] = useState("");
   const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
@@ -78,21 +79,35 @@ export default function ContaDesativada() {
     }
   };
 
-  const HandleLogout = async () => {
+  const Logout = async () => {
     try {
       console.log("Deslogando...");
       await fetch("http://localhost:4000/logout", {
         method: "POST",
         credentials: "include",
       });
+
       setUsername("");
       navigate("/");
+
     } catch (err) {
       console.error("Erro ao deslogar:", err);
     }
   };
 
   return (
+    <ContaDesativadaView
+    username = {username}
+    setUsername = {setUsername}
+    senha = {senha}
+    setSenha = {setSenha}
+    user={user}
+    setUser={setUser}
+    nome={nome}
+    setNome={setNome}
+    Reativar = {Reativar}
+    Logout={Logout}
+    />
    
   );
 }

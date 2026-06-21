@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+import TrocarSenhaView from "~/View/trocarSenha.view";
 
 export default function PasswordChange() {
   const [senhaAtual, setSenhaAtual] = useState("");
@@ -51,7 +52,7 @@ export default function PasswordChange() {
     validarUser();
   }, []);
 
-  const HandleChangePassword = async (e: React.FormEvent<HTMLFormElement>) => {
+  const MudarSenha = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (novaSenha !== confirmarSenha) {
@@ -93,9 +94,9 @@ export default function PasswordChange() {
       setConfirmarSenha("");
       setCarregando(false);
 
-      alert("Sua senha foi alterada.");
+      alert("Sua senha foi alterada. Entre novamente para fazer login");
 
-      Handlelogout();
+      Logout();
 
       return;
     } catch (err) {
@@ -106,7 +107,7 @@ export default function PasswordChange() {
     }
   };
 
-  const Handlelogout = async () => {
+  const Logout = async () => {
     try {
       console.log("Deslogando...");
 
@@ -128,33 +129,19 @@ export default function PasswordChange() {
   };
 
   return (
-    <div>
-      <h1>Trocar Senha</h1>
-      {user && (
-        <form onSubmit={HandleChangePassword}>
-          <input
-            type="password"
-            value={senhaAtual}
-            onChange={(e) => setSenhaAtual(e.target.value)}
-            placeholder="Senha Atual"
-          />
-          <input
-            type="password"
-            value={novaSenha}
-            onChange={(e) => setNovaSenha(e.target.value)}
-            placeholder="Nova Senha"
-          />
-          <input
-            type="password"
-            value={confirmarSenha}
-            onChange={(e) => setConfirmarSenha(e.target.value)}
-            placeholder="Confirmar Senha"
-          />
-          <button type="submit" disabled={carregando}>
-            {carregando ? "Alterando..." : "Alterar Senha"}
-          </button>
-        </form>
-      )}
-    </div>
+    <TrocarSenhaView
+      senhaAtual={senhaAtual}
+      novaSenha={novaSenha}
+      confirmarSenha={confirmarSenha}
+      user={user}
+      carregando={carregando}
+      setSenhaAtual={setSenhaAtual}
+      setNovaSenha={setNovaSenha}
+      setConfirmarSenha={setConfirmarSenha}
+      setUser={setUser}
+      setCarregando={setCarregando}
+      MudarSenha={MudarSenha}
+      Logout={Logout}
+    />
   );
 }

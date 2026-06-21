@@ -1,4 +1,6 @@
-export default function ConfiguracoesDeUsuario() {
+
+
+export default function Perfil() {
   return (
     <div>
       <h1>Configurações de Usuário</h1>
