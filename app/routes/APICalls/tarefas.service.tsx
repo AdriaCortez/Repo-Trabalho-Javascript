@@ -222,7 +222,6 @@ export default function Tarefas() {
       username={username}
       nome={nome}
       tarefa={tarefa}
-      username={username}
       setTitulo={setTitulo}
       setDescricao={setDescricao}
       setTag={setTag}

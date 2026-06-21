@@ -41,7 +41,8 @@ const TaskSchema = new mongoose.Schema({
     tag: [{
         type: String,
         required: false,
-        minLength: 1
+        minLength: 1,
+        maxLength: 50
     }],
 
     criadoPor: {

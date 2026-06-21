@@ -104,6 +104,3 @@ export async function Reativar(req, res) {
       });
   }
 }
-      });
-  }
-}

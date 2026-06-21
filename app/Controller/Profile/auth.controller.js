@@ -31,13 +31,13 @@ export async function logout(req, res) {
 
 export async function mudarSenha(req, res) {
   try {
-    const { senhaatual, novasenha, confirmarSenha } = req.body;
+    const { senhaAtual, novaSenha, confirmarSenha } = req.body;
 
-    if (!senhaatual || !novasenha || !confirmarSenha) {
+    if (!senhaAtual || !novaSenha || !confirmarSenha) {
       return res.status(400).json({ error: "Preencha todos os campos" });
     }
 
-    if (novasenha !== confirmarSenha) {
+    if (novaSenha !== confirmarSenha) {
       return res.status(400).json({ error: "As senhas não coincidem" });
     }
 
@@ -47,7 +47,7 @@ export async function mudarSenha(req, res) {
       return res.status(404).json({ error: "Ops. Usuário não encontrado" });
     }
 
-    const correto = await bcrypt.compare(senhaatual, user.senha);
+    const correto = await bcrypt.compare(senhaAtual, user.senha);
 
     if (!correto) {
       return res.status(403).json({ error: "Senha atual incorreta" });
