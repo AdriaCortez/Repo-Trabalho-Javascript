@@ -213,6 +213,23 @@ export default function Tarefas() {
     }
   };
 
+ const Logout = async () => {
+    try {
+      console.log("Deslogando...");
+      await fetch("http://localhost:4000/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      setUsername("");
+      navigate("/");
+
+    } catch (err) {
+      console.error("Erro ao deslogar:", err);
+    }
+  };
+
+
   return (
     <TarefasView
       titulo={titulo}
@@ -225,11 +242,12 @@ export default function Tarefas() {
       setTitulo={setTitulo}
       setDescricao={setDescricao}
       setTag={setTag}
-      setCheklist={setChecklist}
+      setChecklist={setChecklist}
       setUsername={setUsername}
       adicionarTarefa={adicionarTarefa}
       editarTarefa={editarTarefa}
       deletarTarefa={deletarTarefa}
+      Logout={Logout}
     />
   );
 }

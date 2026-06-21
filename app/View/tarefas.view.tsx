@@ -34,6 +34,7 @@ type Props = {
   adicionarTarefa: (id: any, e: React.FormEvent<HTMLFormElement>) => void;
   editarTarefa: (id: any, e: React.FormEvent<HTMLFormElement>) => void;
   deletarTarefa: (id: any, e: any) => void;
+  Logout: () => void;
 };
 
 export default function TarefasView({
@@ -52,6 +53,7 @@ export default function TarefasView({
   adicionarTarefa,
   editarTarefa,
   deletarTarefa,
+  Logout
 }: Props) 
 
 
@@ -86,7 +88,7 @@ export default function TarefasView({
     setNovaTag("");
     setCorTag("#F4A5B0");
     setItensChecklist([""]);
-    
+
   };
 
   // Abrir modal de adição
@@ -158,18 +160,8 @@ export default function TarefasView({
     setIsChecklistModalOpen(false);
   };
 
-  // Logout
-  const handleLogout = () => {
-    fetch("http://localhost:4000/logout", {
-      method: "POST",
-      credentials: "include",
-    }).then(() => {
-      navigate("/login");
-    });
-  };
-
   // Navegar para configurações
-  const handleConfiguracoes = () => {
+  const Configuracoes = () => {
     navigate("/configuracoes");
   };
 
@@ -272,13 +264,13 @@ export default function TarefasView({
             className="absolute right-0 mt-2 w-48 bg-[#FAF6EF] border-2 border-[#2A2520] shadow-[4px_4px_0_0_#2A2520] z-20"
           >
             <button
-              onClick={handleConfiguracoes}
+              onClick={Configuracoes}
               className="block w-full text-left px-4 py-2 hover:bg-[#F3EEE3] border-b border-[#2A2520] last:border-b-0"
             >
               Configurações
             </button>
             <button
-              onClick={handleLogout}
+              onClick={Logout}
               className="block w-full text-left px-4 py-2 hover:bg-[#F3EEE3]"
             >
               Logout
