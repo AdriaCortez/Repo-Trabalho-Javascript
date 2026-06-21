@@ -6,7 +6,7 @@ import TarefasView from "~/View/tarefas.view";
 
 type ChecklistItem = {
   texto: string;
-  feito: boolean;
+  concluido: boolean;
 };
 
 type Tarefa = {

@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { Usuario } from "../../Model/Database/user.database.model.js";
+import { Tarefa } from "../../Model/Database/task.database.model.js";
 import { ClearStorage } from "../Storage/cookie.controller.js";
 
 export const token = process.env.ACESS_JWT_TOKEN;
@@ -12,7 +13,10 @@ export async function tokenEnviado(req, res) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
-    return res.json(subscribed);
+    const verificarTarefa = await Tarefa.find({ criadoPor: req.userId }).sort({ criadoEm: -1 });
+
+    return res.json({ ...subscribed.toObject(), tarefa: verificarTarefa });
+
   } catch (err) {
     console.error("Erro em services/authService.js", err);
     return res.status(500).json({ error: "Erro interno" });
@@ -100,8 +104,8 @@ export async function verificarLogin(req, res) {
     if (!user.ativo) {
       res.cookie("cookie-auth", assinatura, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
         maxAge: 20 * 60 * 1000,
       }); //cookie adicionado aqui para evitar que, mesmo que o usuário fique desativado, as informações dele sejam passadas pelo front pra que ele possa reativar a conta
 
@@ -113,8 +117,8 @@ export async function verificarLogin(req, res) {
 
     res.cookie("cookie-auth", assinatura, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
       maxAge: 20 * 60 * 1000,
     });
 
