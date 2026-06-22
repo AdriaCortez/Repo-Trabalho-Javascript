@@ -13,10 +13,11 @@ export async function tokenEnviado(req, res) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
-    const verificarTarefa = await Tarefa.find({ criadoPor: req.userId }).sort({ criadoEm: -1 });
+    const verificarTarefa = await Tarefa.find({ criadoPor: req.userId }).sort({
+      criadoEm: -1,
+    });
 
     return res.json({ ...subscribed.toObject(), tarefa: verificarTarefa });
-
   } catch (err) {
     console.error("Erro em services/authService.js", err);
     return res.status(500).json({ error: "Erro interno" });
@@ -57,7 +58,7 @@ export async function mudarSenha(req, res) {
       return res.status(403).json({ error: "Senha atual incorreta" });
     }
 
-    const hashnovasenha = await bcrypt.hash(novasenha, 10);
+    const hashnovasenha = await bcrypt.hash(novaSenha, 10);
 
     user.senha = hashnovasenha;
 

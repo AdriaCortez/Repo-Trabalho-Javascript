@@ -75,9 +75,9 @@ export default function PasswordChange() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          senhaatual: senhaAtual,
-          confirmarsenha: confirmarSenha,
-          novasenha: novaSenha,
+          senhaAtual: senhaAtual,
+          confirmarSenha: confirmarSenha,
+          novaSenha: novaSenha,
         }),
       });
 

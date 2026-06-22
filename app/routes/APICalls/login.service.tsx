@@ -40,7 +40,7 @@ export default function Login() {
                 navigate('/desativado')
                 console.log(data);
                 return;
-            }
+            } //Por algum bug, quando você tenta entrar em uma conta que não existe, tá retornando 403. Mas são 22:17 do dia 21/06 e eu não to afim.
 
             if (ApiLogin.status === 500) {
                 alert("Erro no servidor [500]");
