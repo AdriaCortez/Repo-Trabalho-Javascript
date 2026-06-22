@@ -55,7 +55,7 @@ export async function mudarSenha(req, res) {
     const correto = await bcrypt.compare(senhaAtual, user.senha);
 
     if (!correto) {
-      return res.status(403).json({ error: "Senha atual incorreta" });
+      return res.status(401).json({ error: "Senha atual incorreta" });
     }
 
     const hashnovasenha = await bcrypt.hash(novaSenha, 10);
@@ -85,7 +85,7 @@ export async function verificarLogin(req, res) {
     const user = await Usuario.findOne({ username }).select("+senha");
 
     if (!user) {
-      return res.status(403).json({
+      return res.status(401).json({
         error: "Erro! Esse usuário não existe",
       });
     }
@@ -93,7 +93,7 @@ export async function verificarLogin(req, res) {
     const senhaCorreta = await bcrypt.compare(senha, user.senha);
 
     if (!senhaCorreta) {
-      return res.status(403).json({
+      return res.status(401).json({
         error: "Senha inválida",
       });
     }
@@ -105,8 +105,8 @@ export async function verificarLogin(req, res) {
     if (!user.ativo) {
       res.cookie("cookie-auth", assinatura, {
         httpOnly: true,
-        secure: true,
-        sameSite: "none",
+        secure: false,
+        sameSite: "lax",
         maxAge: 20 * 60 * 1000,
       }); //cookie adicionado aqui para evitar que, mesmo que o usuário fique desativado, as informações dele sejam passadas pelo front pra que ele possa reativar a conta
 
@@ -118,8 +118,8 @@ export async function verificarLogin(req, res) {
 
     res.cookie("cookie-auth", assinatura, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: false,
+      sameSite: "lax",
       maxAge: 20 * 60 * 1000,
     });
 
