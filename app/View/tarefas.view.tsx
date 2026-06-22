@@ -182,7 +182,7 @@ export default function TarefasView({
   // Navegar para configurações
   const Configuracoes = () => {
     setIsDropdownOpen(false);
-    navigate("/configuracoes");
+    navigate("/perfil");
   };
 
   // Logout

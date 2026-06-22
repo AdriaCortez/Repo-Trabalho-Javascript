@@ -282,7 +282,7 @@ export default function CadastroView(config: CadastroConfig) {
               className="inline-block px-3 py-1 border-2 border-[#2A2520] text-xs font-bold uppercase tracking-widest mb-5"
               style={{ backgroundColor: "#F4A5B0" }}
             >
-              ● bem-vinde
+              ● bem-vindo!
             </span>
             <h1
               className="text-4xl lg:text-5xl font-black tracking-tight leading-[1.05] mb-4"

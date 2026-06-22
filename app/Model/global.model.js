@@ -21,7 +21,7 @@ export default function ConfiguracoesGlobais(app) {
         "http://localhost",
       ],
       credentials: true,
-      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
       allowedHeaders: ["Content-Type", "Authorization"],
     }),
   );

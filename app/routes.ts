@@ -7,5 +7,5 @@ export default [
   route("/tarefas", "routes/APICalls/tarefas.service.tsx"),
   route("/trocar-senha", "routes/APICalls/trocarSenha.service.tsx"),
   route("/desativado", "routes/APICalls/contaDesativada.service.tsx"),
-
+  route("/perfil", "routes/APICalls/perfil.service.tsx"),
 ] satisfies RouteConfig;

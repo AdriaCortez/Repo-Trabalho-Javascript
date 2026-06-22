@@ -30,8 +30,14 @@ export default function Login() {
                 return;
             }
 
-            if (ApiLogin.status === 401 || ApiLogin.status === 404 || ApiLogin.status === 403) {
+            if (ApiLogin.status === 401 || ApiLogin.status === 404 ) {
                 alert("Credenciais inválidas ou usuário não encontrado");
+                console.log(data);
+                return;
+            }
+
+            if (ApiLogin.status === 403 ) {
+                navigate('/desativado')
                 console.log(data);
                 return;
             }

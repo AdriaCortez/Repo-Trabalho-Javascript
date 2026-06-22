@@ -5,7 +5,6 @@ import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
 export default function ContaDesativada() {
-
   const [username, setUsername] = useState("");
   const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
@@ -47,7 +46,7 @@ export default function ContaDesativada() {
       console.log("Reativando conta...");
 
       const apiReativar = await fetch("http://localhost:4000/reativar-conta", {
-        method: "PATCH",
+        method: "PUT",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
@@ -89,7 +88,6 @@ export default function ContaDesativada() {
 
       setUsername("");
       navigate("/");
-
     } catch (err) {
       console.error("Erro ao deslogar:", err);
     }
@@ -97,17 +95,16 @@ export default function ContaDesativada() {
 
   return (
     <ContaDesativadaView
-    username = {username}
-    setUsername = {setUsername}
-    senha = {senha}
-    setSenha = {setSenha}
-    user={user}
-    setUser={setUser}
-    nome={nome}
-    setNome={setNome}
-    Reativar = {Reativar}
-    Logout={Logout}
+      username={username}
+      setUsername={setUsername}
+      senha={senha}
+      setSenha={setSenha}
+      user={user}
+      setUser={setUser}
+      nome={nome}
+      setNome={setNome}
+      Reativar={Reativar}
+      Logout={Logout}
     />
-   
   );
 }

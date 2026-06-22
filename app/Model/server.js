@@ -79,7 +79,7 @@ app.put("/desativar-conta", auth, Active, async (req, res) => {
   }
 });
 
-app.patch("/reativar-conta", auth, async (req, res) => {
+app.put("/reativar-conta", auth, async (req, res) => {
   try {
     return Reativar(req, res);
   } catch (err) {

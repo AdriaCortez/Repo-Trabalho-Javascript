@@ -7,7 +7,8 @@ export function ClearStorage(req, res) {
 
   res.clearCookie("cookie-auth", {
     httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    secure: true,
+    sameSite: "none",
+    path: "/",
   });
 }
