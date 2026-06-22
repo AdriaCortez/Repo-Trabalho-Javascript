@@ -42,7 +42,9 @@ export default function Tarefas() {
           } else {
             navigate("/login");
           }
+          
           return;
+
         }
 
         const data = await ApiValidado.json();
